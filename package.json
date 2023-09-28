@@ -4,9 +4,7 @@
   "private": true,
   "scripts": {
     "deploy": "wrangler deploy --minify src/index.ts",
-    "dev": "wrangler dev src/index.ts",
-    "secrets": "wrangler secret put EMAIL_API_KEY",
-    "buckets": "wrangler r2 bucket"
+    "dev": "wrangler dev src/index.ts"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230419.0",

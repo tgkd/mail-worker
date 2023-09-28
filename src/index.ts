@@ -1,6 +1,6 @@
 import { Hono } from 'hono/quick';
-import { cache } from 'hono/cache';
 import { sha256 } from 'hono/utils/crypto';
+import { bearerAuth } from 'hono/bearer-auth';
 
 interface EmailRequest {
   from: string;
@@ -19,9 +19,15 @@ type Env = {
   EMAIL_API_KEY: string;
   SENDER_EMAIL: string;
   IMG_BUCKET: R2Bucket;
+  AUTH_KEY: string;
 };
 
 const app = new Hono<{ Bindings: Env }>();
+
+app.use('*', async (ctx, next) => {
+  const auth = bearerAuth({ token: ctx.env.AUTH_KEY });
+  await auth(ctx, next);
+});
 
 app.put('/upload', async (c) => {
   const data = await c.req.json<RequestData>();
